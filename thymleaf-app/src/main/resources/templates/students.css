@@ -1,0 +1,9 @@
+body {
+    padding-top: 50px;
+}
+
+.my-module {
+    position: fixed;
+    top: 0;
+    left: 0;
+}

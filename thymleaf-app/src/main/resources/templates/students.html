@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="/webjars/bootstrap/5.0.1/css/bootstrap.css" rel="stylesheet"/>
+<script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#myBtn{
+	width:150px;
+	height:38px;
+	background-color:skyblue;
+	color:black;
+	font-size:15px;
+	font-weight:500;
+	border-radius:8px;
+	text-align:center;
+}
+
+.buttonWarnning{
+	background-color:coral;
+	color:white;
+	font-weight:600;
+	text-decoration:none;
+	width:100px;
+	height:30px;
+	padding:5px;
+}
+
+.btn-danger{
+	background-color:red;
+	color:white;
+	font-weight:600;
+	text-decoration:none;
+	width:100px;
+	height:30px;
+	padding:5px;
+}
+</style>
+
+
+<meta charset="ISO-8859-1">
+<title>Students List</title>
+
+</head>
+<body >
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+   
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      
+      <div style="color:white;font-size:14px"class="nav-item active">
+      <h5>Welcome <span th:text="${username}">Welcome Guest!</span></h5>
+     </div>
+    </div>
+  </div>
+</nav>
+
+<br>
+<div class="container">
+ <h2>List Of Students</h2>
+<button id="myBtn" >Add New</button>
+<br>
+<table class="table table-stripped">
+<thead>
+<tr>
+<td>Id</td>
+<td>Name</td>
+<td>Department</td>
+<td>Updated By</td>
+<td>Updated On</td>
+<td>Edit</td>
+<td>Delete</td>
+</tr>
+</thead>
+<tr th:each="student:${students}">
+<td th:text="${student.Id}">Id</td>
+<td th:text="${student.name}">Name</td>
+<td th:text="${student.department}">Department</td>
+<td th:text="${student.updatedBy}">Updated By</td>
+<td th:text="${student.updateOn}">Updated On</td>
+<td><a  th:href="@{/students/getOne/(Id=${student.Id})}"class="warn buttonWarnning" name="editStudentDetails"  >Edit</a></td>
+<td><a th:href="@{/students/delete/(Id=${student.Id})}" class="danger btn-danger" id="deleteButton">Delete</a></td>
+</tr>
+</table>
+</div>
+
+
+
+<div id="myModal" class="modal">
+  <div class="modal-body">
+     <form th:action="@{/students/addNew}" method="post">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Student</h5>
+        <button type="button" class="close-addNew" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control" id="recipient-name" name="Id">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Name:</label>
+            <input type="text" class="form-control" id="recipient-name" name="name">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Department:</label>
+            <input type="text" class="form-control" id="recipient-name" name="department">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Updated By:</label>
+            <input type="text" class="form-control" id="recipient-name" name="updatedBy">
+          </div>
+          
+            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Updated On:</label>
+            <input type="text" class="form-control" id="recipient-name" name="updateOn">
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+  </form>
+
+</div>
+</div>
+
+<div id="editModal" class="modal">
+  <div class="modal-body">
+        
+     <form th:action="@{/students/update}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
+        <button type="button" class="close-Edit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control"  id="IdEdit" name="Id">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Name:</label>
+            <input type="text" class="form-control" id="nameEdit" name="name">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Department:</label>
+            <input type="text" class="form-control"  id="departmentEdit" name="department">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Updated By:</label>
+            <input type="text" class="form-control" id="updatedByEdit" name="updatedBy">
+          </div>
+          
+            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Updated On:</label>
+            <input type="text" class="form-control"  id="updateOnEdit" name="updateOn">
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+  </form>
+
+</div>
+</div>
+
+
+<script>
+document.getElementById("myBtn").onclick=addNew;
+function addNew(){
+var modal = document.getElementById("myModal");
+
+var btn = document.getElementById("myBtn");
+
+var span = document.getElementsByClassName("close-addNew")[0];
+
+  modal.style.display = "block";
+
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+}
+
+
+</script>
+
+<div id="deleteModal" class="modal">
+<div class="modal-body">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm delete</h5>
+        <button type="button" class="close-delete" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this record?</p>
+      </div>
+      <div class="modal-footer">
+        <a href=" " id="delRef" class="btn btn-primary">Yes,Delete</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+
+</html>
